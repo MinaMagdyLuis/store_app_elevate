@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:store_app_elevate/core/data/model/product.dart';
 import 'package:store_app_elevate/ui/home_screen/home_screen_view_model.dart';
 import 'package:store_app_elevate/ui/home_screen/product_item_widget.dart';
+import 'package:store_app_elevate/ui/utils/app_colors.dart';
 
 import '../../core/domain/di/di.dart';
 import '../utils/base_state.dart';
@@ -23,7 +24,29 @@ class _HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Products")),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: AppColors.primary,
+        title: const Text(
+          "Products",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.search, color: Colors.white),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
+          ),
+        ],
+      ),
       body: BlocBuilder<HomeViewModelCubit, BaseState>(
         builder: (context, state) {
           if (state is BaseLoadingState) {
