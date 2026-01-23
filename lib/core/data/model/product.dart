@@ -1,10 +1,10 @@
 import 'rating.dart';
 import 'dart:convert';
 
-product storeResponseFromJson(String str) => product.fromJson(json.decode(str));
-String storeResponseToJson(product data) => json.encode(data.toJson());
-class product {
-  product({
+Product productResponseFromJson(String str) => Product.fromJson(json.decode(str));
+String productResponseToJson(Product data) => json.encode(data.toJson());
+class Product {
+  Product({
       this.id, 
       this.title, 
       this.price, 
@@ -12,7 +12,7 @@ class product {
       this.category, 
       this.image, 
       this.rating,});
-  product.fromJson(dynamic json) {
+  Product.fromJson(dynamic json) {
     id = json['id'];
     title = json['title'];
     price = json['price'];
