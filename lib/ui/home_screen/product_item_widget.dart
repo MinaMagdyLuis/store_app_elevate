@@ -13,33 +13,40 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {},
+      borderRadius: BorderRadius.circular(12),
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        width: MediaQuery.of(context).size.width * .4,
         decoration: BoxDecoration(
           color: AppColors.lightBlue,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.blue.shade200, width: 1),
         ),
-        width: MediaQuery.of(context).size.width * .4,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Image + favorite icon
             Stack(
               alignment: Alignment.topRight,
-
               children: [
-                CachedNetworkImage(
-                  imageUrl: product.image ?? "",
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * .13,
-                  httpHeaders: {"Accept": "image/*"},
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: product.image ?? "",
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * .13,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) =>
+                    const Icon(Icons.error),
+                  ),
                 ),
-                InkWell(
-                  onTap: () {},
+                const Padding(
+                  padding: EdgeInsets.all(6),
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
                     child: Icon(Icons.favorite_border_outlined),
@@ -47,47 +54,76 @@ class ProductCard extends StatelessWidget {
                 ),
               ],
             ),
-            Spacer(),
 
-            Text(
-              product.title ?? "",
-              textAlign: TextAlign.start,
-              maxLines: 2,
-              style: TextStyle(
-                fontSize: 14,
-                height: 1,
+            const SizedBox(height: 8),
 
-                fontWeight: FontWeight.w500,
-                color: Colors.blue.shade800,
+            // Title
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                product.title ?? "",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.blue.shade800,
+                ),
               ),
             ),
-            Spacer(),
 
-            Row(
-              children: [
-                Text("Review (${product.rating})"),
-                Spacer(),
-                Icon(Icons.star, color: Colors.amberAccent),
-              ],
-            ),
-            SizedBox(height: 5),
-            Row(
-              children: [
-                Text("EGB ${product.price.toString()}"),
-                Spacer(),
-                SizedBox(
-                  width: 30,
-                  height: 30,
+            const SizedBox(height: 6),
 
-                  child: FloatingActionButton(  // disables Hero animation
-
-                    backgroundColor: AppColors.primary,
-                     onPressed: () {  },
-                    child: Icon(Icons.add, color: AppColors.white),
+            // Rating
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Review (${product.rating?.rate?.toStringAsFixed(1) ?? '0.0'})",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-              ],
+                  const Icon(
+                    Icons.star,
+                    color: Colors.amberAccent,
+                    size: 16,
+                  ),
+                ],
+              ),
             ),
+
+            const SizedBox(height: 6),
+
+            // Price + add button
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  Text(
+                    "EGP ${product.price}",
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: FloatingActionButton(
+                      heroTag: null,
+                      mini: true,
+                      backgroundColor: AppColors.primary,
+                      onPressed: () {},
+                      child:
+                      const Icon(Icons.add, color: AppColors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 8),
           ],
         ),
       ),
